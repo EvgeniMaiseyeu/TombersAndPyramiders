@@ -40,8 +40,11 @@ class Damageable
 		Instance Methods
 	----------------------------------------------------------------------------------------*/
     public:
-		int getHealth();
-		void setHealth(int health);
+		virtual int getHealth();
+
+		virtual void setHealth(int health);
+
+		virtual void takeDamage(int damage);
 	
 	protected:
 		virtual void death() = 0;

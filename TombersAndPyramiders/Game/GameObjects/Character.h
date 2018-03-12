@@ -14,6 +14,8 @@
 /*========================================================================================
 	Dependencies
 ========================================================================================*/
+#include "SimpleSprite.h"
+#include "BoxCollider.h"
 #include "ComplexSprite.h"
 #include "BasePilot.h"
 
@@ -23,7 +25,8 @@
 #define ANIMATION_IDLE 0
 #define ANIMATION_RUN 1
 #define ANIMATION_ATTACK_MELEE 2
-#define ANIMATION_ATTACK_RANGE 2
+#define ANIMATION_ATTACK_RANGE 3
+#define ANIMATION_HURT 4
 
 /*========================================================================================
 	Character	
@@ -34,7 +37,7 @@ class Character : public ComplexSprite
 		Instance Fields
     ----------------------------------------------------------------------------------------*/
     private:
-
+		BoxCollider* m_boxCollider = nullptr;
 
     /*----------------------------------------------------------------------------------------
 		Resource Management
@@ -64,6 +67,7 @@ class Character : public ComplexSprite
 		void endRunAnimation();
 		void playMeleeAttackAnimation();
 		void playRangeAttackAnimation();
+		void playHurtAnimation();
 
     private:
 		/*--------------------

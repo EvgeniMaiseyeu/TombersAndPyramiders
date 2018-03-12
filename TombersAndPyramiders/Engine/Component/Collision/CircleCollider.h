@@ -6,7 +6,7 @@ class CircleCollider : public Collider {
 private:
 	float m_radius;
 public:
-	CircleCollider(float radius);
+	CircleCollider(GameObject* gameObject, float radius);
 	float getRadius();
 	void setRadius(float radius);
 };

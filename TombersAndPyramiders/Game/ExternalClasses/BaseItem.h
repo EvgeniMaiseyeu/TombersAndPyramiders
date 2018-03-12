@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
 /*========================================================================================
 	Dependencies	
 ========================================================================================*/
@@ -28,6 +31,7 @@ class BaseItem
 
 	protected:
 		Inventory* m_inventory;
+		std::string m_itemIcon;
 
     /*----------------------------------------------------------------------------------------
 		Resource Management
@@ -48,7 +52,9 @@ class BaseItem
 			Sets the item's m_inventory field and calls addSubclassToInventory(), which 
 			should be overriden by subclasses to add themselves to the inventory.
 		*/
-		void addToInventory(Inventory* inventory);
+		std::shared_ptr<BaseItem> addToInventory(Inventory* inventory);
+
+		std::string getItemIcon();
 
 		/**
 			Returns a reference to the GameObject that owns the Inventory component this 
@@ -62,5 +68,5 @@ class BaseItem
 
 			This should only be called after checking that m_inventory is NOT null.
 		*/
-		virtual void addSubclassToInventory() = 0;
+		virtual std::shared_ptr<BaseItem> addSubclassToInventory() = 0;
 };

@@ -15,6 +15,7 @@
 #include "BaseWeapon.h"
 #include "DamagingRegion.h"
 #include "Vector2.h"
+#include <memory>
 
 /*========================================================================================
 	BaseMeleeWeapon	
@@ -25,7 +26,7 @@ class BaseMeleeWeapon : public BaseWeapon
 		Instance Fields
     ----------------------------------------------------------------------------------------*/
 	protected:
-		DamagingRegion m_damagingRegion;
+		std::shared_ptr<DamagingRegion> m_damagingRegion;
 		Vector2 m_offsetFromHolder;
 
     /*----------------------------------------------------------------------------------------
@@ -33,7 +34,10 @@ class BaseMeleeWeapon : public BaseWeapon
     ----------------------------------------------------------------------------------------*/
     public:
         /** Default constructor. */
-        explicit BaseMeleeWeapon(string imageName, float colliderWidth, float colliderHeight, 
+		explicit BaseMeleeWeapon() = delete;
+
+		explicit BaseMeleeWeapon(int damage, string imageName, float colliderWidth, float colliderHeight, 
+			bool destroyOnCollision, float attackCooldownTime, 
 			float xOffsetFromHolder, float yOffsetFromHolder, float colliderScale = 1);
 
 		virtual ~BaseMeleeWeapon() {};
@@ -43,5 +47,15 @@ class BaseMeleeWeapon : public BaseWeapon
 		Instance Methods
     ----------------------------------------------------------------------------------------*/
 	public:
-		void updatePosition();
+		virtual void setOwnerId(int id);
+		virtual bool use();
+
+		virtual void onStart();
+		virtual void onUpdate(int ticks);
+		virtual void onEnd();
+
+		virtual void updatePosition();
+
+	private:
+		void updateAttack(int ticks);
 };

@@ -40,9 +40,9 @@ int BaseHelmet::absorbHeadshot(int damage)
 	return damage;
 }
 
-void BaseHelmet::addSubclassToInventory()
+std::shared_ptr<BaseItem> BaseHelmet::addSubclassToInventory()
 {
-	m_inventory->setHelmet(this);
+	return m_inventory->setHelmet(shared_from_this());
 }
 
 void BaseHelmet::destroy()

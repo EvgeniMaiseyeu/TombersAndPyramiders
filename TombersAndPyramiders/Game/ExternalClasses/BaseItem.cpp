@@ -21,17 +21,23 @@ const float BaseItem::TICKS_PER_SECOND = 60;
 /*----------------------------------------------------------------------------------------
 	Instance Methods
 ----------------------------------------------------------------------------------------*/
-void BaseItem::addToInventory(Inventory* inventory)
+std::shared_ptr<BaseItem> BaseItem::addToInventory(Inventory* inventory)
 {
 	m_inventory = inventory;
 
 	if (m_inventory != nullptr)
 	{
-		addSubclassToInventory();
+		return addSubclassToInventory();
 	}
+	return nullptr;
 }
 
 GameObject* BaseItem::owner()
 {
 	return (m_inventory == nullptr) ? nullptr : m_inventory->getGameObject();
+}
+
+std::string BaseItem::getItemIcon()
+{
+	return m_itemIcon;
 }

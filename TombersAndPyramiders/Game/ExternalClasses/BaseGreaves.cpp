@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------------------
 	Instance Methods
 ----------------------------------------------------------------------------------------*/
-void BaseGreaves::addSubclassToInventory()
+std::shared_ptr<BaseItem> BaseGreaves::addSubclassToInventory()
 {
-	m_inventory->setGreaves(this);
+	return m_inventory->setGreaves(shared_from_this());
 }

@@ -19,4 +19,6 @@ public:
 	void onPause();
 	void onEnd();
 	void setCameraFollow(std::shared_ptr<GameObject> toFollow);
+
+	void spawnPlayer(int x, int y);
 };

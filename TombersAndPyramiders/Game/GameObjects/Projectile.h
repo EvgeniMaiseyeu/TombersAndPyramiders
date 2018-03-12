@@ -33,7 +33,8 @@ class Projectile : public DamagingRegion
 	public:
 		explicit Projectile() = delete;
 
-		explicit Projectile(BaseWeapon* weapon, string imageName, float colliderWidth, float colliderHeight, 
+		explicit Projectile(int damage, string imageName, float colliderWidth, float colliderHeight, 
+			bool destroyOnCollision, 
 			float spawnXPosition, float spawnYPosition, float spriteScale, 
 			float xVelocity, float yVelocity, 
 			float lifespan);
@@ -46,6 +47,9 @@ class Projectile : public DamagingRegion
 	----------------------------------------------------------------------------------------*/
 	public:
 		void onUpdate(int ticks);
+
+	protected:
+		virtual void handleSingleCollision(GameObject* other);
 
 	private:
 		void updatePosition(int ticks);

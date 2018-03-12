@@ -2,12 +2,16 @@
 
 #include "SimpleSprite.h"
 #include "ComponentTemplate.h"
+#include "BoxCollider.h"
+#include "CircleCollider.h"
 
 //Instance/MovableCharacter
 class MovingSquare : public SimpleSprite
 {
 private:
 	////Private Variables
+	std::shared_ptr<BoxCollider> m_boxCollider = nullptr;
+	std::shared_ptr<CircleCollider> m_circleCollider = nullptr;
 
 	////Private Methods
 

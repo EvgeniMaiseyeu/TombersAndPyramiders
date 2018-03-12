@@ -17,6 +17,7 @@
 #include "BaseHelmet.h"
 #include "BaseChestplate.h"
 #include "BaseGreaves.h"
+#include "GameObject.h"
 
 /*----------------------------------------------------------------------------------------
 	Resource Management
@@ -25,78 +26,89 @@ Inventory::Inventory(GameObject* parentGameobject) :
 	Inventory(parentGameobject, nullptr, nullptr, nullptr, nullptr, nullptr)
 {}
 
-Inventory::Inventory(GameObject* parentGameobject, BaseWeapon* weapon, BaseShield* shield, BaseHelmet* helmet,
-	BaseChestplate* chestplate, BaseGreaves* greaves) :
+Inventory::Inventory(GameObject* parentGameobject, std::shared_ptr<BaseWeapon> weapon, std::shared_ptr<BaseShield> shield, std::shared_ptr<BaseHelmet> helmet,
+	std::shared_ptr<BaseChestplate> chestplate, std::shared_ptr<BaseGreaves> greaves) :
 	Component(parentGameobject),
-	m_weapon{ std::unique_ptr<BaseWeapon>(weapon) },
-	m_shield{ std::unique_ptr<BaseShield>(shield) },
-	m_helmet{ std::unique_ptr<BaseHelmet>(helmet) },
-	m_chestplate{ std::unique_ptr<BaseChestplate>(chestplate) },
-	m_greaves{ std::unique_ptr<BaseGreaves>(greaves) }
+	m_weapon{ weapon },
+	m_shield{ shield },
+	m_helmet{ helmet },
+	m_chestplate{ chestplate },
+	m_greaves{ greaves }
 {}
 
 /*----------------------------------------------------------------------------------------
 	Instance Getter Methods
 ----------------------------------------------------------------------------------------*/
-BaseWeapon* Inventory::getWeapon()
+std::shared_ptr<BaseWeapon> Inventory::getWeapon()
 {
-	return &(*m_weapon);
+	return m_weapon;
 }
 
-BaseShield* Inventory::getShield()
+std::shared_ptr<BaseShield> Inventory::getShield()
 {
-	return &(*m_shield);
+	return m_shield;
 }
 
-BaseHelmet* Inventory::getHelmet()
+std::shared_ptr<BaseHelmet> Inventory::getHelmet()
 {
-	return &(*m_helmet);
+	return m_helmet;
 }
 
-BaseChestplate* Inventory::getChestplate()
+std::shared_ptr<BaseChestplate> Inventory::getChestplate()
 {
-	return &(*m_chestplate);
+	return m_chestplate;
 }
 
-BaseGreaves* Inventory::getGreaves()
+std::shared_ptr<BaseGreaves> Inventory::getGreaves()
 {
-	return &(*m_greaves);
+	return m_greaves;
 }
 
 /*----------------------------------------------------------------------------------------
 	Instance Setter Methods
 ----------------------------------------------------------------------------------------*/
-void Inventory::setWeapon(BaseWeapon* weapon)
+std::shared_ptr<BaseWeapon> Inventory::setWeapon(std::shared_ptr<BaseWeapon> weapon)
 {
-	m_weapon = std::unique_ptr<BaseWeapon>(weapon);
+	auto old = m_weapon;
+	m_weapon = weapon;
+	m_weapon->setOwnerId(gameObject->getId());
+	return old;
 }
 
-void Inventory::setShield(BaseShield* shield)
+std::shared_ptr<BaseShield> Inventory::setShield(std::shared_ptr<BaseShield> shield)
 {
-	m_shield = std::unique_ptr<BaseShield>(shield);
+	auto old = m_shield;
+	m_shield = shield;
+	return old;
 }
 
-void Inventory::setHelmet(BaseHelmet* helmet)
+std::shared_ptr<BaseHelmet> Inventory::setHelmet(std::shared_ptr<BaseHelmet> helmet)
 {
-	m_helmet = std::unique_ptr<BaseHelmet>(helmet);
+	auto old = m_helmet;
+	m_helmet = helmet;
+	return old;
 }
 
-void Inventory::setChestplate(BaseChestplate* chestplate)
+std::shared_ptr<BaseChestplate> Inventory::setChestplate(std::shared_ptr<BaseChestplate> chestplate)
 {
-	m_chestplate = std::unique_ptr<BaseChestplate>(chestplate);
+	auto old = m_chestplate;
+	m_chestplate = chestplate;
+	return old;
 }
 
-void Inventory::setGreaves(BaseGreaves* greaves)
+std::shared_ptr<BaseGreaves> Inventory::setGreaves(std::shared_ptr<BaseGreaves> greaves)
 {
-	m_greaves = std::unique_ptr<BaseGreaves>(greaves);
+	auto old = m_greaves;
+	m_greaves = greaves;
+	return old;
 }
 
 /*----------------------------------------------------------------------------------------
 	Instance Methods
 ----------------------------------------------------------------------------------------*/
-void Inventory::addItem(BaseItem* item)
+std::shared_ptr<BaseItem> Inventory::addItem(std::shared_ptr<BaseItem> item)
 {
-	item->addToInventory(this);
+	return item->addToInventory(this);
 }
 
 

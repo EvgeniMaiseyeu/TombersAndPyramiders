@@ -15,7 +15,14 @@
 #include "BaseController.h"
 #include "Damageable.h"
 #include "Vector2.h"
+#include "PlayerPilot.h"
+#include "BoxCollider.h"
+#include "CircleCollider.h"
+#include "Rigidbody.h"
 #include "BasePilot.h"
+#include "WorldItem.h"
+#include "Rigidbody.h"
+
 class Inventory;
 
 /*========================================================================================
@@ -33,6 +40,8 @@ class CharacterController : public BaseController, public Damageable
 	private:
 		Inventory* m_inventory;
 		Vector2 m_movementSpeed;
+		std::shared_ptr<Rigidbody> m_rigidbody;
+		std::shared_ptr<BoxCollider> m_boxCollider;
 
 		std::shared_ptr<Character> m_character;
     /*----------------------------------------------------------------------------------------
@@ -53,6 +62,7 @@ class CharacterController : public BaseController, public Damageable
 			Forwards the onUpdate() call to the pilot.
 		*/
 		void onUpdate(int ticks);
+		void onStart();
 
 		/**
 			Moves this component's gameObject.
@@ -68,6 +78,28 @@ class CharacterController : public BaseController, public Damageable
 			Uses the character's weapon this frame.
 		*/
 		void useWeapon();
+
+
+		/**
+			Picks up the given WorldItem, extracting its BaseItem and equiping it. Returns the item we put down that was previously equipped, or nullptr if none were equipped prior.
+			If no item to pickup, it also returns nullptr, as its a failure to swap
+		*/
+		std::shared_ptr<WorldItem> trySwapItem();
+
+		/**
+			Applies the given amount of damage to the character.
+			
+			The character will handle applying any scaling of this value 
+			based on buffs and equipment.
+		*/
+		virtual void takeDamage(int damage);
+
+	protected:
+		/**
+			Called when the character's HP reaches zero.
+			Handles the player's death.
+		*/
+		void death();
 	
 	private:
 		/**
@@ -84,11 +116,4 @@ class CharacterController : public BaseController, public Damageable
 			Forwards the onUpdate() call to the character's greaves.
 		*/
 		void updateGreaves(int ticks);
-
-	protected:
-		/**
-			Called when the character's HP reaches zero.
-			Handles the player's death.
-		*/
-		void death();
 };

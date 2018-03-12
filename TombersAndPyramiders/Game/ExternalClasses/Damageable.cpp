@@ -29,16 +29,13 @@ Damageable::Damageable(int maxHealth) :
 }
 
 /*----------------------------------------------------------------------------------------
-	Instance Getter Methods
+	Instance Methods
 ----------------------------------------------------------------------------------------*/
 int Damageable::getHealth()
 {
 	return m_health;
 }
 
-/*----------------------------------------------------------------------------------------
-	Instance Setter Methods
-----------------------------------------------------------------------------------------*/
 void Damageable::setHealth(int health)
 {
 	/* Cap min = 0 and max = max health. */
@@ -48,4 +45,9 @@ void Damageable::setHealth(int health)
 	{
 		death();
 	}
+}
+
+void Damageable::takeDamage(int damage)
+{
+	setHealth(getHealth() - damage);
 }

@@ -23,8 +23,8 @@ Character::Character(BasePilot* basePilot) :
 	ComplexSprite(generateComplexSpriteInfo(), 0, 0)
 {
 	setFPS(12);
-	addComponent<Inventory>(this);
-	addComponent<CharacterController>(this, getComponent<Inventory>().get(), basePilot);
+	Inventory* inventory = addComponent<Inventory>(this).get();
+	addComponent<CharacterController>(this, inventory, basePilot);
 }
 
 /*----------------------------------------------------------------------------------------
@@ -50,10 +50,11 @@ std::shared_ptr<ComplexSpriteinfo> Character::generateComplexSpriteInfo()
 {
 	std::shared_ptr<ComplexSpriteinfo> spriteInfo = std::make_shared<ComplexSpriteinfo>();
 
-	spriteInfo->addInfo("squareIdle.png", 8, 1);
+	spriteInfo->addInfo("squareidle.png", 8, 1);
 	spriteInfo->addInfo("squareRun.png", 8, 1);
 	spriteInfo->addInfo("squareRedAttack.png", 8, 1);
 	spriteInfo->addInfo("squareWhiteAttack.png", 8, 1);
+	spriteInfo->addInfo("squareHurt.png", 8, 1);
 
 	return spriteInfo;
 }
@@ -61,14 +62,20 @@ std::shared_ptr<ComplexSpriteinfo> Character::generateComplexSpriteInfo()
 // Changes the sprite animation to running
 void Character::playRunAnimation()
 {
-	changeSprite(ANIMATION_RUN);
+	if (getCurrentSprite() == ANIMATION_IDLE)
+	{
+		changeSprite(ANIMATION_RUN);
+	}
 }
 
 
 // Changes the sprite animation to idling
 void Character::endRunAnimation()
 {
-	changeSprite(ANIMATION_IDLE);
+	if (getCurrentSprite() == ANIMATION_RUN) 
+	{
+		changeSprite(ANIMATION_IDLE);
+	}
 }
 
 
@@ -83,4 +90,9 @@ void Character::playMeleeAttackAnimation()
 void Character::playRangeAttackAnimation()
 {
 	changeSprite(ANIMATION_ATTACK_RANGE, ANIMATION_IDLE);
+}
+
+void Character::playHurtAnimation()
+{
+	changeSprite(ANIMATION_HURT, ANIMATION_IDLE);
 }

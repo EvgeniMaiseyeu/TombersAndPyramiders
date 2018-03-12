@@ -29,11 +29,11 @@ class Inventory : public Component
 		Instance Fields
     ----------------------------------------------------------------------------------------*/
     private:
-		std::unique_ptr<BaseWeapon> m_weapon;
-		std::unique_ptr<BaseShield> m_shield;
-		std::unique_ptr<BaseHelmet> m_helmet;
-		std::unique_ptr<BaseChestplate> m_chestplate;
-		std::unique_ptr<BaseGreaves> m_greaves;
+		std::shared_ptr<BaseWeapon> m_weapon;
+		std::shared_ptr<BaseShield> m_shield;
+		std::shared_ptr<BaseHelmet> m_helmet;
+		std::shared_ptr<BaseChestplate> m_chestplate;
+		std::shared_ptr<BaseGreaves> m_greaves;
 
     /*----------------------------------------------------------------------------------------
 		Resource Management
@@ -46,18 +46,18 @@ class Inventory : public Component
 		*/
 		explicit Inventory(GameObject* parentGameobject);
 
-		explicit Inventory(GameObject* parentGameobject, BaseWeapon* weapon, BaseShield* shield, BaseHelmet* helmet,
-			BaseChestplate* chestplate, BaseGreaves* greaves);
+		explicit Inventory(GameObject* parentGameobject, std::shared_ptr<BaseWeapon> weapon, std::shared_ptr<BaseShield> shield, std::shared_ptr<BaseHelmet> helmet,
+			std::shared_ptr<BaseChestplate> chestplate, std::shared_ptr<BaseGreaves> greaves);
 
 	/*----------------------------------------------------------------------------------------
 		Instance Getter Methods
     ----------------------------------------------------------------------------------------*/
     public:
-        BaseWeapon* getWeapon();
-		BaseShield* getShield();
-		BaseHelmet* getHelmet();
-		BaseChestplate* getChestplate();
-		BaseGreaves* getGreaves();
+        std::shared_ptr<BaseWeapon> getWeapon();
+		std::shared_ptr<BaseShield> getShield();
+		std::shared_ptr<BaseHelmet> getHelmet();
+		std::shared_ptr<BaseChestplate> getChestplate();
+		std::shared_ptr<BaseGreaves> getGreaves();
     
 	/*----------------------------------------------------------------------------------------
 		Instance Setter Methods
@@ -67,11 +67,11 @@ class Inventory : public Component
 			DO NOT CALL THESE METHODS.
 			CALL INVENTORY.ADDITEM() INSTEAD.
 		*/
-		void setWeapon(BaseWeapon* weapon);
-		void setShield(BaseShield* shield);
-		void setHelmet(BaseHelmet* helmet);
-		void setChestplate(BaseChestplate* chestplate);
-		void setGreaves(BaseGreaves* greaves);
+		std::shared_ptr<BaseWeapon> setWeapon(std::shared_ptr<BaseWeapon> weapon);
+		std::shared_ptr<BaseShield> setShield(std::shared_ptr<BaseShield> shield);
+		std::shared_ptr<BaseHelmet> setHelmet(std::shared_ptr<BaseHelmet> helmet);
+		std::shared_ptr<BaseChestplate> setChestplate(std::shared_ptr<BaseChestplate> chestplate);
+		std::shared_ptr<BaseGreaves> setGreaves(std::shared_ptr<BaseGreaves> greaves);
 
 	/*----------------------------------------------------------------------------------------
 		Instance Methods
@@ -80,8 +80,9 @@ class Inventory : public Component
 		/**
 			Adds an item to the inventory.
 			addItem() will resolve the item's type and add or set it appropriately.
+			If addItem replaced a previous item, it is removed form the inventory and returned, or nullptr if nothing is replaced
 		*/
-		void addItem(BaseItem* item);
+		std::shared_ptr<BaseItem> addItem(std::shared_ptr<BaseItem> item);
 		void onStart();
 		void onUpdate(int ticks);
 		void onEnd();

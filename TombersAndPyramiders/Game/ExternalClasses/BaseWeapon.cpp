@@ -12,18 +12,21 @@
 ========================================================================================*/
 #include "BaseWeapon.h"
 #include "Inventory.h"
+#include <memory>
 
 /*----------------------------------------------------------------------------------------
 	Resource Management
 ----------------------------------------------------------------------------------------*/
-BaseWeapon::BaseWeapon() :
+BaseWeapon::BaseWeapon(int damage, float attackCooldownTime) :
+	m_damage{ damage }, 
+	m_attackCooldownTime{ attackCooldownTime }, 
 	m_isAttacking{ false }
 {}
 
 /*----------------------------------------------------------------------------------------
 	Instance Methods
 ----------------------------------------------------------------------------------------*/
-void BaseWeapon::addSubclassToInventory()
+std::shared_ptr<BaseItem> BaseWeapon::addSubclassToInventory()
 {
-	m_inventory->setWeapon(this);
+	return m_inventory->setWeapon(shared_from_this());
 }

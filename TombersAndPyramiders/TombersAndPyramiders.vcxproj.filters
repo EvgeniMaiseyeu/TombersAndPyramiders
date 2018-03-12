@@ -606,5 +606,5 @@
     <Text Include="Engine\External\Render\contrastVertex.txt">
       <Filter>Source Files\Engine\External\Render</Filter>
     </Text>
-  </ItemGroup>
+	</ItemGroup>
 </Project>

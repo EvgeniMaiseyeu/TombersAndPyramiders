@@ -22,15 +22,19 @@
 #include "BaseWeapon.h"
 #include "BaseShield.h"
 #include "BaseGreaves.h"
+#include "Rigidbody.h"
 #include "Character.h"
 #include "BaseMeleeWeapon.h"
 #include "BaseProjectileWeapon.h"
+#include "Collider.h"
+#include "SpawnManager.h"
+#include "AudioManager.h"
 
 /*----------------------------------------------------------------------------------------
 	Static Fields
 ----------------------------------------------------------------------------------------*/
 const int CharacterController::DEFAULT_CHARACTER_MAX_HP = 100;
-const Vector2 CharacterController::DEFAULT_CHARACTER_MOVEMENT_SPEED = Vector2(1, 1);
+const Vector2 CharacterController::DEFAULT_CHARACTER_MOVEMENT_SPEED = Vector2(0.2, 0.2);
 
 /*----------------------------------------------------------------------------------------
 	Resource Management
@@ -51,11 +55,16 @@ CharacterController::CharacterController(GameObject* parentGameobject, Inventory
 	{
 		m_character = std::shared_ptr<Character>(character);
 	}
+	m_boxCollider = gameObject->addComponent<BoxCollider>(gameObject, gameObject->getTransform()->getScale(), gameObject->getTransform()->getScale());
+	m_rigidbody = gameObject->addComponent<Rigidbody>(gameObject, m_boxCollider.get());
 }
 
 /*----------------------------------------------------------------------------------------
 	Instance Methods
 ----------------------------------------------------------------------------------------*/
+void CharacterController::onStart()
+{}
+
 void CharacterController::onUpdate(int ticks)
 {
 	m_pilot.get()->onUpdate(ticks);
@@ -80,19 +89,34 @@ void CharacterController::move(Vector2 delta)
 	}
 
 	gameObject->getTransform()->addTranslation(delta.getX(), delta.getY());
+	m_rigidbody->setVelocity(delta);
 }
 
 void CharacterController::useWeapon()
 {
-	if (m_inventory->getWeapon() != nullptr)
+	std::shared_ptr<BaseWeapon> weapon = m_inventory->getWeapon();
+	if (weapon != nullptr)
 	{
-		BaseWeapon* weapon = m_inventory->getWeapon();
-		weapon->use(); //What if this returned a bool for whether the attack fired or not? So the rest didn't fire for just trying to call useWeapon and let us let weapons determine then things likecooldown
-		//m_inventory->getWeapon()->use();
-		 
-		//dynamic_cast<BaseMeleeWeapon>(weapon);
-		m_character->playMeleeAttackAnimation();
+		if (weapon->use())
+		{
+			std::shared_ptr<BaseMeleeWeapon> melee = dynamic_pointer_cast<BaseMeleeWeapon>(weapon);
+			if (melee != nullptr) {
+				m_character->playMeleeAttackAnimation();
+				AudioManager::getInstance()->playSwordSwingSFX();
+			}
+			else {
+				m_character->playRangeAttackAnimation();
+				AudioManager::getInstance()->playShootArrowSFX();
+			}
+		}
 	}
+}
+
+void CharacterController::takeDamage(int damage)
+{
+	Damageable::takeDamage(damage);
+	m_character->playHurtAnimation();
+	AudioManager::getInstance()->playHitSFX();
 }
 
 void CharacterController::updateWeapon(int ticks)
@@ -121,5 +145,30 @@ void CharacterController::updateGreaves(int ticks)
 
 void CharacterController::death()
 {
+	destroy(gameObject->getId());
+}
 
+std::shared_ptr<WorldItem> CharacterController::trySwapItem()
+{
+	std::shared_ptr<BoxCollider> myCollider = gameObject->getComponent<BoxCollider>();
+	if (myCollider != nullptr && myCollider->collisionDetected()) {
+		std::vector<GameObject*> collidedObjects = myCollider->getColliders();
+		for (int i = 0; i < collidedObjects.size(); i++)
+		{
+			WorldItem* worldItem = dynamic_cast<WorldItem*>(collidedObjects[i]);
+
+			if (worldItem != nullptr) 
+			{
+				std::shared_ptr<BaseItem> extractedItem = worldItem->pickupItem();
+
+				std::shared_ptr<BaseItem> removedItem = m_inventory->addItem(extractedItem);
+				if (removedItem != nullptr) {
+					return SpawnManager::getInstance()->generateWorldItem(m_character->getTransform()->getX(), m_character->getTransform()->getY(), removedItem);
+				}
+
+				break;
+			}
+		}
+	}
+	return nullptr;
 }

@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "Component.h"
 #include "GameObject.h"
 //#include "Battler.h"
@@ -40,6 +40,7 @@ private:
 		engage = 2,
 		b_MAX
 	}currentBehaviour;
+
 	void GetBehaviour();
 	bool CanMakeDecision(float deltaTIme);
 
@@ -72,3 +73,4 @@ public:
 	GameObject *targetBattler;
 };
 
+*/

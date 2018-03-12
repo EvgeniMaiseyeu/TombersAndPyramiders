@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "SpriteRendererManager.h"
+#include "HelperFunctions.h"
 
 AudioManager* AudioManager::s_instance;
 
@@ -24,6 +25,10 @@ AudioManager::AudioManager()
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		std::cout << "ERROR: " << Mix_GetError() << std::endl;
+	m_hit = Mix_LoadWAV(BuildPath("Game/Assets/Audio/hit.mp3").c_str());
+	m_shootArrow = Mix_LoadWAV(BuildPath("Game/Assets/Audio/shootarrow.mp3").c_str());
+	m_swordSwing = Mix_LoadWAV(BuildPath("Game/Assets/Audio/swordswing.mp3").c_str());
+	m_valiantWind = Mix_LoadWAV(BuildPath("Game/Assets/Audio/valiantwind.mp3").c_str());
 }
 
 AudioManager::~AudioManager()
@@ -31,9 +36,33 @@ AudioManager::~AudioManager()
 	Mix_Quit();
 }
 
-void AudioManager::playMusic(std::string filename, int loops, float volumeFactor)
+
+void AudioManager::playMusic(int loop, float volumeFactor)
 {
-	//Mix_PlayMusic(mGameObj->GetMusic(filename), loops);
+	Mix_PlayChannel(1, m_valiantWind, 0);
+	Mix_Volume(1, 128 * volumeFactor);
+}
+
+void AudioManager::playHitSFX(int loop, float volumeFactor)
+{
+	Mix_PlayChannel(2, m_hit, 0);
+	Mix_Volume(2, 128 * volumeFactor);
+}
+
+void AudioManager::playShootArrowSFX(int loop, float volumeFactor)
+{
+	Mix_PlayChannel(3, m_shootArrow, 0);
+	Mix_Volume(3, 128 * volumeFactor);
+}
+
+void AudioManager::playSwordSwingSFX(int loop, float volumeFactor)
+{
+	Mix_PlayChannel(4, m_swordSwing, 0);
+	Mix_Volume(4, 128 * volumeFactor);
+}
+
+/*void AudioManager::playMusic(std::string filename, int loops, float volumeFactor)
+{
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		std::cout << "ERROR: " << Mix_GetError() << std::endl;
 	Mix_Chunk *bgm = Mix_LoadWAV(filename.c_str());
@@ -48,26 +77,7 @@ void AudioManager::playSEFshoot(std::string filename, int loops, float volumeFac
 	Mix_Chunk *SEF = Mix_LoadWAV(filename.c_str());
 	Mix_PlayChannel(2, SEF, 0);
 	Mix_Volume(2, 128 * volumeFactor);
-}
-
-void AudioManager::playSEFhit(std::string filename, int loops, float volumeFactor)
-{
-	//Mix_PlayMusic(mGameObj->GetMusic(filename), loops);
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		std::cout << "ERROR: " << Mix_GetError() << std::endl;
-	Mix_Chunk *SEF = Mix_LoadWAV(filename.c_str());
-	Mix_PlayChannel(3, SEF, 0);
-	Mix_Volume(3, 35 * volumeFactor);
-}
-
-void AudioManager::playMusicForWin(std::string filename, int loops, float volumeFactor)
-{
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		std::cout << "ERROR: " << Mix_GetError() << std::endl;
-	Mix_Chunk *bgm = Mix_LoadWAV(filename.c_str());
-	Mix_PlayChannel(4, bgm, 0);
-	Mix_Volume(4, 50 * volumeFactor);
-}
+}*/
 
 void AudioManager::pauseMusic()
 {

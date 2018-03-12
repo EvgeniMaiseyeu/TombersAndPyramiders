@@ -4,6 +4,9 @@
 #include "InputManager.h"
 #include <iostream>
 #include "CharacterTestScene.h"
+#include "LaunchScene.h"
+#include "NetworkedGameScene.h"
+#include "PossessionTestScene.h"
 
 /*
 This class is not intended to have a lot of code. This is intended to be the on entry call for
@@ -19,7 +22,7 @@ Each GameObject cycles through and updates each one of their game components.
 
 void Game::onStart()
 {
-	SceneManager::getInstance()->pushScene(new CharacterTestScene());
+	SceneManager::getInstance()->pushScene(new LaunchScene());//NetworkedGameScene());
 }
 
 void Game::onUpdate(int ticks)

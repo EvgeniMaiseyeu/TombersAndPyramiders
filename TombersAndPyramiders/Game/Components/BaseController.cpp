@@ -23,14 +23,15 @@ BaseController::BaseController(GameObject* parentGameobject, BasePilot* pilot) :
 {
 	if (pilot == nullptr)
 	{
-		throw std::invalid_argument("BaseController::BaseController(): pilot cannot be null.");
+		//TODO: Not throw on this
+		//throw std::invalid_argument("BaseController::BaseController(): pilot cannot be null.");
 	}
 
 	setPilot(pilot);
 }
 
 /*----------------------------------------------------------------------------------------
-	Instance Setter Methods
+	Instance Setter / Getter Methods
 ----------------------------------------------------------------------------------------*/
 void BaseController::setPilot(BasePilot* pilot)
 {
@@ -40,6 +41,26 @@ void BaseController::setPilot(BasePilot* pilot)
 	{
 		m_pilot.get()->setController(this);
 	}
+}
+
+void BaseController::swapPilots(BaseController* otherController)
+{
+	if (otherController != nullptr) 
+	{
+		BasePilot* otherPilot = otherController->getAndReleasePilot();
+		BasePilot* myPilot = m_pilot.release();
+		otherController->setPilot(myPilot);
+		setPilot(otherPilot);
+	}
+	else
+	{
+		throw "ERROR::BaseController::swapPilots::Parameter for other controller was a nullptr";
+	}
+}
+
+BasePilot* BaseController::getAndReleasePilot()
+{
+	return m_pilot.release();
 }
 
 /*----------------------------------------------------------------------------------------

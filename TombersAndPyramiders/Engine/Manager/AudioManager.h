@@ -1,11 +1,16 @@
 #pragma once
 #include <string>
+#include <SDL_mixer.h>
 
 class AudioManager
 {
 private:
 	static AudioManager* s_instance;
-	//GameObject* mGameObj;
+	
+	Mix_Chunk* m_hit;
+	Mix_Chunk* m_shootArrow;
+	Mix_Chunk* m_swordSwing;
+	Mix_Chunk* m_valiantWind;
 
 	AudioManager();
 	~AudioManager();
@@ -15,10 +20,10 @@ public:
 	static void release();
 
 	//Starts playing music
-	void playMusic(std::string filename, int loop = -1, float volumeFactor = 1.0f);
-	void playSEFhit(std::string filename, int loop = -1, float volumeFactor = 1.0f);
-	void playSEFshoot(std::string filename, int loop = -1, float volumeFactor = 1.0f);
-	void playMusicForWin(std::string filename, int loop = -1, float volumeFactor = 1.0f);
+	void playMusic(int loop = -1, float volumeFactor = 1.0f);
+	void playHitSFX(int loop = -1, float volumeFactor = 1.0f);
+	void playShootArrowSFX(int loop = -1, float volumeFactor = 1.0f);
+	void playSwordSwingSFX(int loop = -1, float volumeFactor = 1.0f);
 	//Pauses the current music
 	void pauseMusic();
 	//Resume playing the music
@@ -27,7 +32,4 @@ public:
 	void stopMusic();
 	//Starts sound effect, plays til the end and stops
 	//void PlaySoundEffect(std::string filename, int loop = 0, int channel = 0);
-
-
 };
-#pragma once

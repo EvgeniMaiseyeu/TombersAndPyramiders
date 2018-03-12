@@ -12,6 +12,7 @@ private:
 	bool m_collision;
 	std::vector<GameObject*> m_colliders;
 	bool m_disabled;
+	bool m_isTrigger = false;
 public:
 	Collider(GameObject* gameObject/*, float radius*/);
 	bool doesCollide(GameObject* other);
@@ -23,6 +24,8 @@ public:
 
 	void setDisabled(bool value);
 	bool getDisabled();
+	void setIsTrigger(bool isNowTrigger);
+	bool isTrigger();
 
 	GameObject* getColliderObj();
 	void setColliderObj(GameObject* collider);
@@ -33,8 +36,6 @@ public:
 	void onStart() {};
 	void onUpdate(int ticks) {};
 	void onEnd() {};
-
-	Transform* getTransform();
 
 	~Collider();
 };
