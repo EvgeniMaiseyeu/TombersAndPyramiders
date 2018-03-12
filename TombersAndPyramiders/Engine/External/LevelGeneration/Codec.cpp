@@ -11,7 +11,7 @@
 
 void Codec::encode(std::vector<std::vector<int>> level)
 {
-	for (int i = 0; i < level.size; i++) 
+	for (int i = 0; i < level.size(); i++) 
 	{
 		for (int j = 0; j < level[i].size(); j++) 
 		{

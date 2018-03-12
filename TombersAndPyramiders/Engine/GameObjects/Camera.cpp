@@ -45,31 +45,9 @@ void Camera::init() {}
 
 bool Camera::isOnScreen(float transformX, float transformY, float transformScale)
 {
-	float transformRadius = transformScale / 2.0f;
-
-	float leftBorder = transformX - transformRadius;
-	float rightBorder = transformX + transformRadius;
-	float topBorder = transformY + transformRadius;
-	float bottomBorder = transformY - transformRadius;
-
-	float width = rightBorder - leftBorder;
-	float height = topBorder - bottomBorder;
-
 	Transform* cameraTransform = s_activeCamera->getTransform();
-
-	float cameraWidth = getGameWidth();
-	float cameraHeight = getGameHeight();
-	float cameraX = cameraTransform->getX();
-	float cameraY = cameraTransform->getY();
-
-	float cameraLeftBorder = cameraX - 0.5f;
-	float cameraRightBorder = cameraX + cameraWidth - 0.5f;
-	float cameraTopBorder = cameraY + cameraHeight - 0.5f;
-	float cameraBottomBorder = cameraY - 0.5f;
-
-	//Check if in boundary
-	return (abs(leftBorder - cameraLeftBorder) * 2 < (width + cameraWidth)) &&
-		(abs(bottomBorder - cameraBottomBorder) * 2 < (height + cameraHeight));
+	return (abs(transformX - cameraTransform->getX()) * 2 < (transformScale + getGameWidth())) &&
+		(abs(transformY - cameraTransform->getY()) * 2 < (transformScale + getGameHeight()));
 }
 
 bool Camera::isOnScreen(Transform* transform)

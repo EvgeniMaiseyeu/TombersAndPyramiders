@@ -117,7 +117,7 @@ public:
 	void onEnd() {};
 	Transform* getTransform();
 
-	void destroy(std::shared_ptr<GameObject> gameObject);
+	void destroy(const std::shared_ptr<GameObject> gameObject);
 	void destroy(int gameObjectId);
 
 	virtual ~GameObject();

@@ -48,3 +48,4 @@ std::shared_ptr<Character> SpawnManager::generatePlayerCharacter(float x, float 
 	
 	return simpleCharacter;
 }
+

@@ -55,6 +55,7 @@ void Projectile::updateLifespan(int ticks)
 
 	if (m_lifespan <= 0)
 	{
-		destroy(getId()); // TODO: Destroy projectile without a memory access violation.
+		
+		destroy(getId());
 	}
 }

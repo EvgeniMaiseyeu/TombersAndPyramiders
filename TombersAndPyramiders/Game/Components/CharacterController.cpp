@@ -23,6 +23,8 @@
 #include "BaseShield.h"
 #include "BaseGreaves.h"
 #include "Character.h"
+#include "BaseMeleeWeapon.h"
+#include "BaseProjectileWeapon.h"
 
 /*----------------------------------------------------------------------------------------
 	Static Fields
@@ -84,7 +86,12 @@ void CharacterController::useWeapon()
 {
 	if (m_inventory->getWeapon() != nullptr)
 	{
-		m_inventory->getWeapon()->use();
+		BaseWeapon* weapon = m_inventory->getWeapon();
+		weapon->use(); //What if this returned a bool for whether the attack fired or not? So the rest didn't fire for just trying to call useWeapon and let us let weapons determine then things likecooldown
+		//m_inventory->getWeapon()->use();
+		 
+		//dynamic_cast<BaseMeleeWeapon>(weapon);
+		m_character->playMeleeAttackAnimation();
 	}
 }
 

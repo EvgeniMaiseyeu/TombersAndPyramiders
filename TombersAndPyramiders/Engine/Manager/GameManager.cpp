@@ -8,7 +8,6 @@
 #include "NetworkingManager.h"
 #include "PhysicsManager.h"
 #include "AudioManager.h"
-#include "GarbageCollection.h"
 #include <memory>
 
 GameManager* GameManager::s_instance;

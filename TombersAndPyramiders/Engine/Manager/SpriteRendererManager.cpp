@@ -4,7 +4,6 @@
 #include <condition_variable>
 #include "SpriteSheet.h"
 #include "Camera.h"
-#include "GarbageCollection.h"
 
 /*
 TODO:

@@ -43,7 +43,7 @@ Transform* GameObject::getTransform()
 	return m_transform.get();
 }
 
-void GameObject::destroy(std::shared_ptr<GameObject> gameObject)
+void GameObject::destroy(const std::shared_ptr<GameObject> gameObject)
 {
 	destroy(gameObject->getId());
 }
